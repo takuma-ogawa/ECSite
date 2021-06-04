@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
+    'webpack_loader',
     'front.apps.FrontConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -130,3 +132,13 @@ STRIPE_SECRET_KEY = 'sk_test_51Itu6yB4fjgBHRmuxC16y9MnDkkuqLgmrMeHM24CoT9O5yg4KP
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Webpack loader
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'webpack-stats.json'),
+        'LOADER_CLASS': 'webpack_loader.loader.WebpackLoader',
+    }
+}
+

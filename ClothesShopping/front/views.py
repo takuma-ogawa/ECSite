@@ -5,15 +5,6 @@ from django.conf import settings
 import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-# Create your views here.
-
-
-# class IndexView(generic.TemplateView):
-#     template_name = 'front/index.html'
-#
-#     def get(self, request, *args, **kwargs):
-#         products = Product.objects.all()
-#         return render(request, self.template_name, {'products':products})
 
 class IndexView(generic.ListView):
     template_name = 'front/index.html'
