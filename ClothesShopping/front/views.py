@@ -11,6 +11,11 @@ class IndexView(generic.ListView):
     model = Product
 
 
+class ProductList(generic.ListView):
+    template_name = 'front/vue.html'
+    model = Product
+
+
 class ProductDetail(generic.DetailView):
     template_name = 'front/detail.html'
     model = Product

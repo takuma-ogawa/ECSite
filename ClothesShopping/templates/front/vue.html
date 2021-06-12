@@ -2,13 +2,48 @@
     <head>
         <meta charset="utf-8">
         <title>Vue.js + Django</title>
+        <script src="https://unpkg.com/vue"></script>
     </head>
     <body>
         {% load render_bundle from webpack_loader %}
-        <div id="app">
-            <app></app>
+        <div>
+          <ul v-for="product in products">
+            <li><a href="[[product.link]]">商品名: [[product.product_name]]</a> 価格: [[product.price]]</li>
+          </ul>
         </div>
         {% render_bundle "chunk-vendors" %}
         {% render_bundle "app" %}
     </body>
 </html>
+
+<script>
+
+var vm = new Vue({
+  delimiters: ['[[', ']]'],
+  el: '#app',
+  data: {
+    products: []
+  },
+  mounted: function() {
+    {% for product in product_list %}
+    this.products.push({
+      productID:product.pk,
+      product_name:product.product_name,
+      price:product.price,
+      link:"{% url 'front:detail' product.pk %}",
+    })
+    {% endfor %}
+
+
+    console.log(this.products);
+  },
+  methods: {
+    changeStatus: function(item) {
+      item.done = !item.done;
+    }
+  }
+})
+
+
+
+</script>

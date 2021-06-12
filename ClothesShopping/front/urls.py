@@ -8,5 +8,5 @@ app_name = 'front'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('detail/<int:pk>', views.ProductDetail.as_view(), name='detail'),
-    path('vue', TemplateView.as_view(template_name='front/vue.html'), name='vue'),
+    path('vue', views.ProductList.as_view(), name='vue'),
 ]
