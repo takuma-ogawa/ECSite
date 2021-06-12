@@ -1,35 +1,44 @@
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <title>Vue.js + Django</title>
-        <script src="https://unpkg.com/vue"></script>
+      
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+      <title>Vue.js + Django</title>
+      <script src="https://unpkg.com/vue"></script>
+      <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+      <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+      <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     </head>
     <body>
-        {% load render_bundle from webpack_loader %}
-        <div>
-          <ul v-for="product in products">
-            <li><a href="[[product.link]]">商品名: [[product.product_name]]</a> 価格: [[product.price]]</li>
+        <div id="products">
+          <ul>
+            <li v-for="product in products"><a :href="[[product.link]]">商品名: [[product.product_name]]</a> 価格: [[product.price]]</li>
           </ul>
+          <v-checkbox
+          v-model="a"
+          label="あ"
+          color="red"
+        ></v-checkbox>
         </div>
-        {% render_bundle "chunk-vendors" %}
-        {% render_bundle "app" %}
     </body>
 </html>
-
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 <script>
 
 var vm = new Vue({
   delimiters: ['[[', ']]'],
-  el: '#app',
+  el: '#products',
+  vuetify: new Vuetify(),
   data: {
+    a:"",
     products: []
   },
   mounted: function() {
     {% for product in product_list %}
     this.products.push({
-      productID:product.pk,
-      product_name:product.product_name,
-      price:product.price,
+      productID:{{product.pk}},
+      product_name:"{{product.product_name}}",
+      price:{{product.price}},
       link:"{% url 'front:detail' product.pk %}",
     })
     {% endfor %}
