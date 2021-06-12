@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect
 from django.views import generic
 from .models import Product
 from django.conf import settings
+import json
+from django.http import JsonResponse
+
 import stripe
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
@@ -11,9 +15,14 @@ class IndexView(generic.ListView):
     model = Product
 
 
-class ProductList(generic.ListView):
+class ShowProductList(generic.TemplateView):
     template_name = 'front/vue.html'
-    model = Product
+
+
+def get_product_list(request):
+    products = Product.objects.all().values()
+    product_list = list(products)
+    return JsonResponse(product_list, safe=False)
 
 
 class ProductDetail(generic.DetailView):
