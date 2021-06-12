@@ -1,3 +1,4 @@
+
 <html lang="en">
     <head>
       
@@ -10,14 +11,25 @@
     </head>
     <body>
         <div id="products">
-          <ul>
-            <li v-for="product in products"><a :href="[[product.link]]">商品名: [[product.product_name]]</a> 価格: [[product.price]]</li>
-          </ul>
-          <v-checkbox
-          v-model="a"
-          label="あ"
-          color="red"
-        ></v-checkbox>
+          <v-app>
+            <v-main>
+              <ul>
+                <li v-for="product in products"><a :href="[[product.link]]">商品名: [[product.product_name]]</a> 価格: [[product.price]]</li>
+              </ul>
+              <v-checkbox
+              v-model="a"
+              label="あ"
+              color="red"
+            ></v-checkbox>    
+        <v-select
+          :items="products"
+          item-text="product_name"
+          item-value="productID"
+          v-model="c"
+          style="width:10%;"
+        ></v-select>
+            </v-main>
+          </v-app>
         </div>
     </body>
 </html>
@@ -31,6 +43,8 @@ var vm = new Vue({
   vuetify: new Vuetify(),
   data: {
     a:"",
+    b:"",
+    c:"",
     products: []
   },
   mounted: function() {
@@ -56,3 +70,4 @@ var vm = new Vue({
 
 
 </script>
+
