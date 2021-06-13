@@ -4,6 +4,7 @@ from .models import Product
 from django.conf import settings
 import json
 from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404
 
 import stripe
 
@@ -23,6 +24,12 @@ def get_product_list(request):
     products = Product.objects.all().values()
     product_list = list(products)
     return JsonResponse(product_list, safe=False)
+
+
+def post_product_list(request):
+    product = get_object_or_404(Product, pk=id)
+    product.save()
+    return JsonResponse(True)
 
 
 class ProductDetail(generic.DetailView):
