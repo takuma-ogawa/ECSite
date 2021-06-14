@@ -5,6 +5,8 @@ from django.conf import settings
 import json
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
+from extra_views import ModelFormSetView
+from .forms import ProductUpdateForm
 
 import stripe
 
@@ -27,9 +29,16 @@ def get_product_list(request):
 
 
 def post_product_list(request):
-    product = get_object_or_404(Product, pk=id)
-    product.save()
-    return JsonResponse(True)
+    json_post = json.loads(request.body)
+    products = list(json_post["products"])
+    print(products)
+    for update_product in products:
+        print(update_product)
+        product = Product.objects.get(id=update_product["id"])
+        product.price = update_product["price"]
+        product.product_name = update_product["product_name"]
+        product.save()
+    return JsonResponse({"result": True})
 
 
 class ProductDetail(generic.DetailView):

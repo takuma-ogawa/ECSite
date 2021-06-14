@@ -39,6 +39,13 @@
               @click="postProducts"
               >保存
             </v-btn>
+            <v-snackbar
+            v-model="snackbar"
+            :timeout="timeout"
+            color="success"
+          >
+            保存に成功しました
+          </v-snackbar>
             </v-main>
           </v-app>
         </div>
@@ -56,7 +63,9 @@ var vm = new Vue({
     a:"",
     b:"",
     c:"",
-    products: []
+    timeout:1000,
+    products: [],
+    snackbar:false,
   },
   mounted: function() {
 
@@ -83,8 +92,13 @@ var vm = new Vue({
       csrftoken = Cookies.get('csrftoken');
       headers = {'X-CSRFToken': csrftoken};
 
-      axios.get('{% url "front:product_post" %}',this.products,{headers: headers})
+      axios.post('{% url "front:product_post" %}',{"products":this.products},{headers: headers})
       .then(response => {
+        if(response.data.result){
+          this.snackbar = true;
+        }else{
+
+        }
         console.log(response.data);
       })
       .catch(response => console.log(response))
