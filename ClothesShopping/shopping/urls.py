@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from . import views
+from .views import views
 from django.views.generic import TemplateView
 
 app_name = 'shopping'
