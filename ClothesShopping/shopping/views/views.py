@@ -5,10 +5,32 @@ from django.conf import settings
 import json
 from django.http import JsonResponse
 from django.shortcuts import render
+from ..forms import SignUpFormStore
+from django.urls import reverse_lazy
+from django.contrib.auth import login
+from django.http import HttpResponseRedirect
+from django.contrib.auth.forms import UserCreationForm
 
 import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+# class SignUp(generic.CreateView):
+#     form_class = SignUpFormStore
+#     template_name = "management/signup.html"
+#     success_url = reverse_lazy('top')
+#
+#     def form_valid(self, form):
+#         store = form.save()
+#         login(self.request, store)
+#         self.object = store
+#         return HttpResponseRedirect(self.get_success_url()) # リダイレクト
+
+class SignUpView(generic.CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('login')
+    template_name = 'management/signup.html'
 
 
 class IndexView(generic.ListView):
@@ -32,7 +54,6 @@ def post_product_list(request):
     print(products)
     for update_product in products:
         product = Product.objects.get(id=update_product["id"])
-        product.price = update_product["price"]
         product.product_name = update_product["product_name"]
         product.save()
     return JsonResponse({"result": True})

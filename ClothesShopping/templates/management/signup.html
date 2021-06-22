@@ -15,35 +15,35 @@
         <div id="products">
           <v-app>
             <v-main>
-              <table>
-                <thead>
-                  <tr>
-                    <td>商品名</td>
-                    <td>価格</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="product in products">
-                    <td>
-                      <v-text-field v-model="product.product_name"></v-text-field>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <v-btn 
-              depressed   
-              color="primary"
-              @click="postProducts"
-              >保存
-            </v-btn>
-            <v-snackbar
-            v-model="snackbar"
-            :timeout="timeout"
-            color="success"
-          >
-            保存に成功しました
-          </v-snackbar>
-            </v-main>
+                <form method="post" action="{% url 'signup' %}">
+                    {% csrf_token %}
+                    <table>
+                    <tr>
+                        <td>{{ form.username.label_tag }}</td>
+                        <td>{{ form.store_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.email.label_tag }}</td>
+                        <td>{{ form.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.password1.label_tag }}</td>
+                        <td>{{ form.password }}</td>
+                    </tr>
+                    </table>       
+                    <input type="submit" value="login" />
+                    
+                    {# エラーメッセージを表示 #}
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                         {% endfor %}
+                    {% endif %} 
+                    </form>
+                
+                </v-main>
           </v-app>
         </div>
     </body>
@@ -80,9 +80,8 @@ var vm = new Vue({
   },
   methods: {
     getProducts:function(){
-      axios.get('{% url "shopping:product_list" %}')
+      axios.get('{% url "front:product_list" %}')
     .then(response => {
-      console.log(response.data);
       this.products = [];
       this.products =response.data;
     })
@@ -93,16 +92,15 @@ var vm = new Vue({
       csrftoken = Cookies.get('csrftoken');
       headers = {'X-CSRFToken': csrftoken};
 
-      axios.post('{% url "shopping:product_post" %}',{"products":this.products},{headers: headers})
+      axios.post('{% url "front:product_post" %}',{"products":this.products},{headers: headers})
       .then(response => {
-        console.log(response.data);
-        this.snackbar = true;
+        if(response.data.result){
+          this.snackbar = true;
           this.getProducts();
-       
-       /* if(response.data.result){
         }else{
 
-        }*/
+        }
+        console.log(response.data);
       })
       .catch(response => console.log(response))
 

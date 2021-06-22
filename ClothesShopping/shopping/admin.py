@@ -3,8 +3,8 @@ from .models import Product
 # Register your models here.
 
 
-class ProductsAdmin(admin.ModelAdmin):
-    fields = ['product_name', 'price']
+#class ProductsAdmin(admin.ModelAdmin):
+#    fields = ['product_name', 'price']
 
 
-admin.site.register(Product, ProductsAdmin)
+admin.site.register(Product)

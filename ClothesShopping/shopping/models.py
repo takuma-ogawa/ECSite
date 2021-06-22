@@ -62,6 +62,8 @@ class ProductReview(models.Model):
 class Store(models.Model):
     store_name = models.CharField(max_length=250, default="")
     directly_managed_flag = models.BooleanField(default=False)
+    email = models.TextField(default="")
+    password = models.CharField(max_length=20, default="")
     create_datetime = models.DateTimeField(default=datetime.now())
     update_datetime = models.DateTimeField(default=datetime.now())
     visibility = models.BooleanField(default=True)
