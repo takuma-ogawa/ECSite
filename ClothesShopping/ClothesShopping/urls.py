@@ -16,6 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 urlpatterns = [
-    path('', include('shopping.urls')),
+    path('', include('ecsite.urls')),
     path('admin/', admin.site.urls),
 ]

@@ -1,4 +1,4 @@
-from ClothesShopping.shopping.models import Product
+from ClothesShopping.app.models import Product
 
 
 def product_edit(new_products):
