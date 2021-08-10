@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'rest_framework',
     'webpack_loader',
-    'ecsite.apps.ECSiteConfig',
+    'management.apps.ManagementConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,7 +57,7 @@ ROOT_URLCONF = 'ClothesShopping.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'ecsite/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'management/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
