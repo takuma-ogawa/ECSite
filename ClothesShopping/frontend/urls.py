@@ -23,6 +23,4 @@ urlpatterns = [
     #path('management/signup/', views.SignUp.as_view(), name='signup')
     #path('management/product_list/', views.SignUp.as_view(), name='management_product_list'),
     #path('management/new_product/', views.SignUp.as_view(), name='management_new_product'),
-
-
 ]

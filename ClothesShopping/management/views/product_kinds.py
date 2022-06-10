@@ -9,7 +9,7 @@ from django.core import serializers
 from django.shortcuts import render
 
 
-class ProductLists():
+class ProductKinds():
     def render_index_page(request):
         return render(request,'product_lists_index.html')
     def render_add_page(request):

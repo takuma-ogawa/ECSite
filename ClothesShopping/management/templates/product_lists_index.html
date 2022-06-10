@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<product-lists-index></product-lists-index>
+{% endblock %}
+
+{% block footer %}
+<style>
+  .Info {
+    background-color: #0288D1;
+  }
+
+  .Success {
+    background-color: #43A047;
+  }
+
+  #loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 1;
+    background-color: darkgray;
+    opacity: 0.5;
+  }
+</style>
+<script type="text/template" id="product-lists-index">
+
+<div style="margin-top:0.2%;">
+  <div v-if="loading" id="loading">
+      <v-progress-circular indeterminate />
+  </div>
+
+  <h1 class="font1">商品一覧</h1>
+  <div class="row">
+    <div class="col-10"></div>
+    <div class="col-2">
+      <v-btn x-large darken-4 color="red darken-3" style="width:100%; font-size:2em; font-weight:bold;color:white;" @click="moveAddPage" :disabled="data.disabled.save">新規追加</v-btn>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-12">
+          <v-form v-model="valid" ref="masterForm">
+
+              <v-simple-table class="table table-bordered">
+                  <template v-slot:default>
+                      <thead>
+                          <tr>
+                              <th class="text-left font-large">
+                                  従業員名
+                              </th>
+                              <th class="text-left font-large">
+                                  集計開始日
+                              </th>
+                              <th class="text-left font-large">
+                                  集計終了日
+                              </th>
+                              <th class="text-left font-large">
+                                  合計勤務時間
+                              </th>
+                              <th class="text-left font-large">
+                                  合計残業時間
+                              </th>
+                              <th class="text-left font-large">
+                                  合計有給時間
+                              </th>
+
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr v-for="(meisai,index) in data.meisai">
+                              <td class="text-left font-large">
+                                  [[meisai.EmployeeName]]
+                              </td>
+                              <td class="text-left font-large">
+                                  [[$moment(meisai.StartDate).format("YYYY年MM月DD日")]]
+                              </td>
+                              <td class="text-left font-large">
+                                  [[$moment(meisai.EndDate).format("YYYY年MM月DD日")]]
+                              </td>
+                              <td class="text-left font-large">
+                                  [[meisai.TotalWorkingHours]]
+                              </td>
+                              <td class="text-left font-large">
+                                  [[meisai.TotalOverTime]]
+                              </td>
+                              <td class="text-left font-large">
+                                  [[meisai.TotalPaidVacationTime]]
+                              </td>
+
+                              <td>
+                                  <v-btn depressed color="primary" style="width:100%;margin-top:5%; font-weight:bold; color:white;" @@click="moveDetailPage(meisai.WorkingHoursCountID)" :disabled="data.disabled.save">詳細ページへ</v-btn>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </template>
+              </v-simple-table>
+          </v-form>
+      </div>
+
+  </div>
+</div>
+</script>
+<script>
+  Vue.component('product-lists-index', {
+    data: function () {
+      return {
+        loading: true,
+        valid: true,
+        data: {
+          newID: -1,
+          ErrorMessage: "",
+          timeout: 2000,
+          snackbar: false,
+          snackbarError: false,
+          employeesIndex: {},
+          employees: [],
+          meisai: [],
+          remove: [],
+          rules: {
+            employeename: [v => { return blankRules(v) },],
+          },
+          disabled: {
+            save: false,
+          },
+          visible: {
+            totalCreate: false,
+          },
+          create: {
+            StartDate: "2021-07-27",
+            EndDate: "2021-07-27",
+            EmployeeIDs: [],
+
+          },
+          search: {
+            StartDate: "",
+            EndDate: "",
+            EmployeeIDs: [],
+          },
+
+        },
+      }
+    },
+    methods: {
+      getData: function () {
+        csrftoken = Cookies.get('csrftoken');
+        headers = { 'X-CSRFToken': csrftoken };
+        axios.post('{% url "product_lists:get_product" %}', {}, { headers: headers })
+          .then(response => {
+            console.log(response.data)
+            this.products = [];
+            this.data.products = response.data;
+            this.loading = false;
+          })
+          .catch(response => console.log(response))
+      },
+      postProducts: function () {
+      },
+      moveAddPage: function () {
+        window.location.href = "/product_lists/add";
+      }
+
+
+    },
+    created: function () {
+    },
+    mounted: function () {
+      this.getData();
+    },
+    watch: {
+
+    },
+    template: '#product-lists-index'
+  });
+</script>
+{% endblock %}

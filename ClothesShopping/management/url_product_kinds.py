@@ -1,7 +1,7 @@
 from django.urls import path
 from .views.product_lists import ProductLists
 
-app_name = 'product_lists'
+app_name = 'product_kinds'
 
 urlpatterns = [
      path('index', ProductLists.render_index_page, name='index'),

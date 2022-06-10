@@ -1,60 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
 
-      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-      <title>Vue.js + Django</title>
-      <script src="https://unpkg.com/vue"></script>
-      <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-      <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
-      <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-      <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    </head>
-    <body>
-        <div id="products">
-          <v-app>
-            <div>
-              <v-app-bar
-                color="gray accent-4"
-                dark
-              >
-                <v-app-bar-nav-icon></v-app-bar-nav-icon>
-          
-                <v-toolbar-title>管理画面</v-toolbar-title>
-          
-                <div class="flex-grow-1"></div>
-          
-                <v-btn icon>
-                  <v-icon>mdi-heart</v-icon>
-                </v-btn>
-          
-                <v-btn icon>
-                  <v-icon>mdi-magnify</v-icon>
-                </v-btn>    
-              </v-app-bar>
-          </div>
-            <v-main>
-              <v-content>
-                <v-container>
-                  {% block content %}
-                  {%  endblock %}
+<head>
 
-                </v-container>
-              </v-content>  
-            </v-main>
-            <v-footer>
-              <div class="flex-grow-1"></div>
-              <div>2021年6月23日</div>
-            </v-footer>
-  
-          </v-app>
-        </div>
-    </body>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <title>ショッピングサイト管理画面</title>
+  <script src="https://unpkg.com/vue"></script>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  {% block header %}
+  {% endblock %}
+</head>
+
+<body>
+  <div id="app">
+    <v-app style="height: 100vh;">
+      <div>
+        <v-app-bar color="deep-purple" dark>
+          <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+          <v-toolbar-title>管理画面</v-toolbar-title>
+
+          <div class="flex-grow-1"></div>
+
+          <v-btn icon>
+            <v-icon>mdi-heart</v-icon>
+          </v-btn>
+
+          <v-btn icon>
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
+        </v-app-bar>
+      </div>
+      <v-navigation-drawer v-model="drawer" absolute temporary>
+        <v-list-item class="px-2">
+          <v-list-item-avatar>
+            <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+          </v-list-item-avatar>
+          <v-list-item-title>John Leider</v-list-item-title>
+          </v-list-item>
+        <v-divider></v-divider>
+        <v-list dense>
+          <v-list-item v-for="item in items" :key="item.title" link>
+            <v-list-item-icon>
+              <v-icon>[[ item.icon ]]</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>[[ item.title ]]</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>      
+
+      <v-main>
+         <v-content>
+          <v-container style="width: 100%;margin: 0;padding: 0;">
+            {% block content %}
+            {% endblock %}
+          </v-container>
+        </v-content>
+      </v-main>
+      <v-footer>
+        <div class="flex-grow-1"></div>
+        <div>2021年6月23日</div>
+      </v-footer>
+
+    </v-app>
+  </div>
+</body>
+
 </html>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-moment@4.1.0/dist/vue-moment.min.js"></script>
+<script>
+    const vueMoment = window['vueMoment'];
+    Vue.use(vueMoment);
+</script>
 
-{% block script %}
-{%  endblock %}
+{% block footer %}
+{% endblock %}
 
+<script>
+
+  var vm = new Vue({
+    delimiters: ['[[', ']]'],
+    el: '#app',
+    vuetify: new Vuetify(),
+    data: {
+      drawer: false,
+      items: [
+        { title: 'Home', icon: 'mdi-home-city' },
+        { title: '商品一覧', icon: 'mdi-account' },
+        { title: 'Users', icon: 'mdi-account-group-outline' },
+      ],
+      mini: true,
+    },
+    mounted: function () {
+    },
+    methods: {
+    }
+  })
+
+</script>
